@@ -20,7 +20,7 @@ class Fone{
         number = vetor[1];
     }
     public static boolean validade(String number){
-        String validos = "123456789()-";
+        String validos = "1234567890()-";
         for(int i=0; i<number.length(); i++){
             char c = number.charAt(i);
             if(validos.indexOf(c)==-1){
@@ -105,17 +105,14 @@ class Agenda{
     public int findContato(String id){
         for(int i=0; i<contatos.size(); i++){
             if(contatos.get(i).getName().equals(id)){
-                System.out.println("achei "+id);
                 return i;
             }
         }
-        System.out.println("nao achei "+id);
         return -1;
     }
     
     public void addContato(String name, List<Fone> fone){
         ArrayList<Fone> fones = new ArrayList<>(fone);
-        //int aux = findContato(name);
         if(findContato(name)==-1){
             Contato contato = new Contato(name);
             for(Fone num : fones){
@@ -126,8 +123,14 @@ class Agenda{
             Collections.sort(contatos);
             return;
         }
-        System.out.println("contato ja existe "+name);
+        int aux = findContato(name);
+        Contato contato = contatos.get(aux);
+        for(Fone tele : fones)
+            contato.addFone(tele.id, tele.number); 
+        contatos.add(contato);
+        System.out.println("fone add");    
         Collections.sort(contatos);
+        return;
     }
 
     public boolean rmContato(String nome){
@@ -141,11 +144,9 @@ class Agenda{
         if(contato.starred == true){
             bookmarks.remove(nome);
             contatos.remove(aux);
-            System.out.println("contato removidofav");
             return true;
         }
         contatos.remove(aux);
-        System.out.println("contato removido");
         return true;
     }
     
@@ -254,7 +255,7 @@ public class Favoritos{
             }else if(line.equals("show")){
                 System.out.println(agenda);
             }else if(in[0].equals("add")){
-                ArrayList<Fone> fones = new ArrayList<Fone>();
+                ArrayList<Fone> fones = new ArrayList<>();
                 for(int i=2; i<in.length; i++){
                     fones.add(new Fone(in[i]));
                 }
