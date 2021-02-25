@@ -1,9 +1,7 @@
 package ContatoS10;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.TreeMap;
 
 public class Agenda {
@@ -13,25 +11,24 @@ public class Agenda {
         this.contatos = new TreeMap<>();
     }
 
-    public void addContato(String name, List<Fone> fone){
-        ArrayList<Fone> fones = new ArrayList<>(fone); 
-        if(!(contatos.containsKey(name))){
-            ContatoPlus contato = new ContatoPlus(name);
-            for(Fone num : fones)
-                contato.addFone(num.id, num.number);
-            contatos.put(name, contato);
+    public void addContact(Contato contato){
+        ArrayList<Fone> numeros = new ArrayList<>(contato.fones);
+        if(!(contatos.containsKey(contato.nome))){
+            ContatoPlus cont = new ContatoPlus(contato.nome, contato.fones);
+            contatos.put(cont.nome, cont);
             System.out.println("contato add");
             return;
         }else{
-            //se o contato ja existir, incluir os novos numeros;
-            ContatoPlus contato = contatos.get(name);
-            for(Fone tele : fones)
-                contato.addFone(tele.id, tele.number); 
-            contatos.put(name, contato);
+            //se o contato ja existir, incluir novos fones
+            ContatoPlus cont = getContato(contato.nome);
+            for(Fone fone : numeros)
+                cont.addFone(fone.id, fone.number);
+            contatos.put(cont.nome, cont);  
             System.out.println("fone add");
+            return;
         }
     }
-    
+        
     public boolean rmContato(String nome){
         if(!(contatos.containsKey(nome))){
             throw new NullPointerException();
@@ -63,28 +60,7 @@ public class Agenda {
         
         return pess;
     }
-//    public ArrayList<Contato> search(String pattern){
-//        ArrayList<Contato> pess = new ArrayList<>();
-//        for(Contato contato : contatos){
-//            if(contato.nome.contains(pattern))
-//                pess.add(contato);
-//        }
-//        for(Contato contato : contatos){
-//            for(Fone fone : contato.getFones()){
-//                if(fone.id.contains(pattern))
-//                    pess.add(contato);
-//            }
-//        }
-//        for(Contato contato : contatos){
-//            for(Fone fone : contato.getFones()){
-//                if(fone.number.contains(pattern))
-//                    pess.add(contato);
-//            }
-//        }
-//        return pess;
-//    }
-    
-    
+  
     ContatoPlus getContato(String name){
         if(contatos.containsKey(name)){
             return contatos.get(name);
@@ -109,7 +85,7 @@ public class Agenda {
     @Override
     public String toString(){
         String saida = "";
-        for(Contato contato : contatos.values()){
+        for(ContatoPlus contato : contatos.values()){
             saida+= contato+"\n";
         }
         return saida;

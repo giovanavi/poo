@@ -1,14 +1,15 @@
 package ContatoS10;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class Contato implements Comparable<Contato>{
+public class Contato{
     String nome;
     public ArrayList<Fone> fones;
     
-    public Contato(String nome){
+    public Contato(String nome, List<Fone> fones){
         this.nome = nome;
-        this.fones = new ArrayList<>();
+        this.fones = new ArrayList<>(fones);
     }
     
     public boolean addFone(String id, String number){
@@ -46,8 +47,4 @@ public class Contato implements Comparable<Contato>{
         }
         return saida;
     }
-
-    public int compareTo(Contato o) {
-        return nome.compareTo(o.getName());
-    }    
 }
